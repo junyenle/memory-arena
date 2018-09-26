@@ -1,4 +1,4 @@
-# raimi_std
+# raimi_lib
 
 This is a personal C++ library.
 
