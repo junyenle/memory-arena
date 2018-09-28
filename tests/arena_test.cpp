@@ -1,3 +1,7 @@
+/* g++ tests/arena_test.cpp -o arena_test -std=c++11
+*  ./arena_test
+*/
+
 #include "../arena.h"
 #include <iostream>
 #include <string>

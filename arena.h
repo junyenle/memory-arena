@@ -4,7 +4,8 @@
 #include <new>
 #include <iostream>
 
-/* Simple Memory Arena 
+/* Simple Memory Arena with Pool Stack
+   Author: Jun Yen Leung
 
 *  Does NOT support copying
 *  Does NOT suport reallocation of previously allocated data (except entire pools)
