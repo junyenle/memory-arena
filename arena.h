@@ -111,13 +111,12 @@ bool Arena::pop()
 }
 
 // pushes a pool to the top of the pool stack
+// alignment doesn't matter here because we align within the pools
 bool Arena::push(size_t requested_size)
 {
 	m_mtx.lock();
 
 	size_t pool_size = requested_size + sizeof(Pool);
-	// if buffer is exactly alignment, we don't need it
-	// else, add the buffer
 	size_t total_size = pool_size;
 
 	if (m_end - m_free < pool_size)
