@@ -8,50 +8,104 @@ public:
 	int m_int;
 	void print()
 	{
-		std::cout << "This should print." << std::endl;
+		std::cout << "Output: This should print." << std::endl;
+	}
+	void print2()
+	{
+		std::cout << "Output: This should also print." << std::endl;
+	}
+};
+
+class TestClass2
+{
+public:
+	void print()
+	{
+		std::cout << "Output: This should print as well." << std::endl;
+	}
+};
+
+class TestClass3
+{
+public:
+	int m_int;
+	void print()
+	{
+		std::cout << "Output: This should print!" << std::endl;
+	}
+	void print2()
+	{
+		std::cout << "Output: This should also print." << std::endl;
 	}
 };
 
 int main()
 {
-	/* ARENA ON THE STACK */
-	std::cout << "ARENA ON THE STACK TESTS" << std::endl;
 	Arena arena(1000);
+	
+	// first test
+	std::cout << "\nFIRST TEST\nExpected: This should print." << std::endl;
+	arena.push(200);
+	TestClass* tc = arena.allocate(TestClass());
+	tc->print();
 
-	// built in data / objects
-	int* int1 = arena.allocate(5);
-	std::string* str = arena.allocate(std::string("hi"));
-	std::cout << "Should output: 5     Outputs: " << *int1 << std::endl;
-	std::cout << "Should output: hi    Outputs: " << *str << std::endl;
+	// second test
+	std::cout << "\nSECOND TEST\nExpected: This should print.\nExpected: This should also print." << std::endl;
+	arena.push(200);
+	TestClass* tc2 = arena.allocate(TestClass());
+	tc->print();
+	tc2->print2();
 
-	// custom objects
-	// data
-	TestClass* testClass = arena.allocate(TestClass());
-	testClass->m_int = 10;
-	std::cout << "Should output: 10    Outputs: " << testClass->m_int << std::endl;
-	// calling functions
-	testClass->print();
+	// third test
+	std::cout << "\nTHIRD TEST\nExpected: This should print." << std::endl;
+	arena.pop();
+	tc->print();
 
+	// fourth test
+	std::cout << "\nFOURTH TEST\nExpected: This should print.\nExpected: This should print as well." << std::endl;
+	arena.push(200);
+	TestClass2* tc3 = arena.allocate(TestClass2());
+	tc->print();
+	tc3->print();
 
-	/* ARENA ON THE HEAP */
-	std::cout << "\nARENA ON THE HEAP TESTS" << std::endl;
-	Arena* arena_ptr = new Arena(1000);
+	// fifth test
+	std::cout << "\nFIFTH TEST\nExpected: not enough space" << std::endl;
+	if (!arena.push(800)) {
+		std::cout << "Output: not enough space" << std::endl;
+	}
+	else
+	{
+		std::cout << "Output: enough space" << std::endl;
+	}
 
-	// built in data / objects
-	int* int2 = arena_ptr->allocate(5);
-	std::string* str2 = arena_ptr->allocate(std::string("hi"));
-	std::cout << "Should output: 5     Outputs: " << *int2 << std::endl;
-	std::cout << "Should output: hi    Outputs: " << *str2 << std::endl;
+	// sixth test
+	std::cout << "\nSIXTH TEST\nExpected: too many pops" << std::endl;
+	arena.pop();
+	arena.pop();
+	if (!arena.pop())
+	{
+		std::cout << "Output: too many pops" << std::endl;
+	}
+	else
+	{
+		std::cout << "Output: pop was allowed" << std::endl;
+	}
 
-	// custom objects
-	// data
-	TestClass* testClass2 = arena_ptr->allocate(TestClass());
-	testClass2->m_int = 10;
-	std::cout << "Should output: 10    Outputs: " << testClass2->m_int << std::endl;
-	// calling functions
-	testClass2->print();
+	// seventh test
+	std::cout << "\nSEVENTH TEST\nExpected: enough space\nExpected: This should print." << std::endl;
+	if (!arena.push(800)) {
+		std::cout << "Output: not enough space" << std::endl;
+	}
+	else
+	{
+		std::cout << "Output: enough space" << std::endl;
+	}
+	tc->print();
 
-	// cleanup
-	delete arena_ptr;
+	// eighth test
+	std::cout << "\nEIGHTH TEST\nExpected: enough space\nExpected: This should print!" << std::endl;
+	TestClass3* tc4 = arena.allocate(TestClass3());
+	tc4->print();
+
 
 }
