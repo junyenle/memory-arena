@@ -82,6 +82,7 @@ Arena::~Arena()
 // pops a pool from the top of the pool stack
 bool Arena::pop()
 {
+	m_mtx.lock();
 	if (m_top_pool == nullptr)
 	{
 		return false;
@@ -105,12 +106,15 @@ bool Arena::pop()
 		// set top pool to previous pool
 		m_top_pool = (((Pool*)m_top_pool)->prev);
 	}
+	m_mtx.unlock();
 	return true;
 }
 
 // pushes a pool to the top of the pool stack
 bool Arena::push(size_t requested_size)
 {
+	m_mtx.lock();
+
 	size_t pool_size = requested_size + sizeof(Pool);
 	// if buffer is exactly alignment, we don't need it
 	// else, add the buffer
@@ -145,6 +149,7 @@ bool Arena::push(size_t requested_size)
 	// increment m_free in arena
 	m_free += total_size;
 
+	m_mtx.unlock();
 	return true;
 
 }
@@ -153,6 +158,7 @@ bool Arena::push(size_t requested_size)
 // returns nullptr if not enough space
 template <class T> T* Arena::allocate(T data)
 {
+	m_mtx.lock();
 	size_t size = sizeof(data);
 
 	// auto alignment
@@ -177,6 +183,7 @@ template <class T> T* Arena::allocate(T data)
 	// place data at pointer
 	*(T*)block_start = data;
 
+	m_mtx.unlock();
 	// return pointer to data
 	return (T*)block_start;
 }

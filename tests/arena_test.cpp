@@ -107,7 +107,7 @@ int main()
 	tc->print();
 
 	// eighth test
-	std::cout << "\nEIGHTH TEST\nExpected: enough space\nExpected: This should print!" << std::endl;
+	std::cout << "\nEIGHTH TEST\nExpected: This should print!" << std::endl;
 	TestClass3* tc4 = arena.allocate(TestClass3());
 	tc4->print();
 
