@@ -2,7 +2,6 @@
 #include <mutex>
 #include <cstdlib>
 #include <new>
-#include <iostream>
 
 /* Simple Memory Arena with Pool Stack
    Author: Jun Yen Leung
