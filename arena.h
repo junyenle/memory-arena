@@ -11,27 +11,13 @@
 *  BE SURE TO COMPILE WITH C++ 11+
 
 * Description: 
-* This is a pool allocator on top of a stack allocator.
-* You alllocate one large "arena" of contiguous memory to begin. All subsequent memory allocations will be from this arena.
-* You push "pools" of memory onto the arena as desired. You can only allocate to the most recent pool.
-* When you pop, you remove the highest pool from the arena. This memory can now be reused in new pools.
-* This allows you to push pools separately for different parts of your program.
-* If I'm writing a video game, my arena might look like this:
-
-                |--------------------------------|---------------------------------------------|-----------------|
-bottom of stack | global objects, like my player |               world 1 objects               | level 5 objects | top of stack
-                |--------------------------------|---------------------------------------------|-----------------|
-
 *  Usage:
-*  In your program...
-*  1. #include "arena.h"
-*  2. Create an Arena of the desired size (e.g. Arena arena(1000); for one kb)
-*  3. Push pools on to the Arena as desired... (e.g. arena.push(200); to push a pool of 200b)
-*  4. Allocate memory to your objects as such:
+*  1. Create an Arena of the desired size (e.g. Arena arena(1000); for one kb)
+*  2. Push pools on to the Arena as desired... (e.g. arena.push(200); to push a pool of 200b)
+*  3. Allocate memory to your objects as such:
 *  		Given an arbitrary class C with constructor C(),
 *  			C* c_pointer = arena.allocate(C());
-*  5. Pop pools off the Arena as desired... (e.g. arena.pop())
-*  6. Delete your arena object if you dynamically allocated it. 
+*  4. Pop pools off the Arena as desired... (e.g. arena.pop())
 */
 
 
