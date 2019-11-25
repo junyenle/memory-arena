@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <new>
 
-/* Simple Memory Arena with Pool Stack
+/* Simple Memory Arena
    Author: Jun Yen Leung
 
 *  Does NOT support copying
